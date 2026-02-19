@@ -1,0 +1,6 @@
+/*
+
+tasks.jar {
+	enabled = false
+}
+*/
