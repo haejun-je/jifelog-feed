@@ -35,7 +35,7 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew clean build --no-daemon
-          ls -al build/libs
+          ls -al apps/api/build/libs
 
       # push 이벤트에서만 실행 (PR에서는 skip)
       - name: Set image metadata

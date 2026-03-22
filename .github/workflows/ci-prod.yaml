@@ -33,7 +33,7 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew clean build --no-daemon
-          ls -al build/libs
+          ls -al apps/api/build/libs
 
       - name: Set image metadata
         run: |
