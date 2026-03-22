@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dev-jifelog-com
+
+resources:
+  - ../../base
+
+images:
+  - name: jifelog-feed-api
+    newName: jhjun07/jifelog-feed-api
+    newTag: dev-b3c9f28efbbc7c67f75bdb02cb45d9b8d0906434
+
+patches:
+  - path: patch-deployment.yaml
+  - path: patch-ingress.yaml
