@@ -1,10 +1,11 @@
 package com.jifelog.feed.domain
 
+import com.fasterxml.uuid.Generators
 import java.time.Instant
 import java.util.UUID
 
 data class Post(
-    val id: UUID? = null,
+    val id: UUID = Generators.timeBasedEpochGenerator().generate(),
     val userId: UUID,
     val content: String,
     val visibility: String,

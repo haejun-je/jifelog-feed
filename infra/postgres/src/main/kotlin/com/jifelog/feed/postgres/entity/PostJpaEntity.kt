@@ -4,7 +4,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
 import java.util.UUID
 
@@ -12,9 +11,8 @@ import java.util.UUID
 @Table(schema = "feed", name = "post")
 class PostJpaEntity(
     @Id
-    @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
     @Column(name = "id", columnDefinition = "uuid", updatable = false)
-    val id: UUID? = null,
+    val id: UUID,
 
     @Column(name = "fk_user_id", nullable = false)
     val userId: UUID,

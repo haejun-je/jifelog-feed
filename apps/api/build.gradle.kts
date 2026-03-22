@@ -5,11 +5,11 @@ plugins {
     id("io.spring.dependency-management")
 }
 
-java {
+/*java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(24)
     }
-}
+}*/
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
@@ -17,7 +17,7 @@ dependencies {
     implementation("tools.jackson.module:jackson-module-kotlin")
 
     implementation(project(":core:application"))
-    implementation(project(":infra:postgres"))
+    runtimeOnly(project(":infra:postgres"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

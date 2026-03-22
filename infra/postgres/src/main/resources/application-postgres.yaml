@@ -1,9 +1,0 @@
-spring:
-  datasource:
-    url: url
-    username: username
-    password: pwd
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.orm.jdbc.bind: trace
