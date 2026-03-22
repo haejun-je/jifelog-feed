@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: feed-api-ingress
+spec:
+  ingressClassName: public
+#  tls:
+#    - hosts:
+#        - dev-feed-api.jifelog.com
+#      secretName: dev-jifelog-wildcard-tls
+  rules:
+    - host: dev-feed-api.jifelog.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: feed-api
+                port:
+                  number: 80
