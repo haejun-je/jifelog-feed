@@ -1,4 +1,4 @@
-name: CI (develop) - Build, Push Image, Update Kustomize
+name: Feed API CI/CD (develop) - Build, Push Image, Update Kustomize
 
 on:
   push:
@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  feed-api-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -28,7 +28,7 @@ jobs:
           distribution: "temurin"
           cache: gradle
 
-      - name: Build jar
+      - name: Build feed-api jar
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
           GITHUB_ACTOR: ${{ secrets.GH_ID }}
@@ -38,7 +38,7 @@ jobs:
           ls -al apps/api/build/libs
 
       # push 이벤트에서만 실행 (PR에서는 skip)
-      - name: Set image metadata
+      - name: Set feed-api image metadata
         run: |
           echo "IMAGE_TAG=dev-${GITHUB_SHA}" >> $GITHUB_ENV
           echo "IMAGE_REPO=jhjun07/jifelog-feed-api" >> $GITHUB_ENV
@@ -49,20 +49,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker image
+      - name: Build feed-api Docker image
         run: |
           docker build \
+            -f apps/api/Dockerfile \
             -t ${IMAGE_REPO}:${IMAGE_TAG} \
             -t ${IMAGE_REPO}:dev-latest \
-            .
+            apps/api
 
       # 7) Docker Hub로 푸시
-      - name: Push Docker image
+      - name: Push feed-api Docker image
         run: |
           docker push ${IMAGE_REPO}:${IMAGE_TAG}
           docker push ${IMAGE_REPO}:dev-latest
 
-      - name: Update Kustomize image tag (develop overlay) and push commit
+      - name: Update feed-api Kustomize image tag (develop overlay) and push commit
         run: |
           FILE="deploy/api/overlays/develop/kustomization.yaml"
           sed -i "0,/newTag:/s/newTag:.*/newTag: ${IMAGE_TAG}/" "$FILE"

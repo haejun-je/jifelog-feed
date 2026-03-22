@@ -1,4 +1,4 @@
-name: CI (prod) - Build, Push Image, Update Kustomize
+name: Feed API CI/CD (prod) - Build, Push Image, Update Kustomize
 
 on:
   push:
@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  feed-api-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -29,13 +29,13 @@ jobs:
           distribution: "temurin"
           cache: gradle
 
-      - name: Build jar
+      - name: Build feed-api jar
         run: |
           chmod +x ./gradlew
           ./gradlew clean build --no-daemon
           ls -al apps/api/build/libs
 
-      - name: Set image metadata
+      - name: Set feed-api image metadata
         run: |
           echo "IMAGE_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
           echo "IMAGE_REPO=jhjun07/jifelog-feed-api" >> $GITHUB_ENV
@@ -46,19 +46,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker image
+      - name: Build feed-api Docker image
         run: |
           docker build \
+            -f apps/api/Dockerfile \
             -t ${IMAGE_REPO}:${IMAGE_TAG} \
             -t ${IMAGE_REPO}:latest \
-            .
+            apps/api
 
-      - name: Push Docker image
+      - name: Push feed-api Docker image
         run: |
           docker push ${IMAGE_REPO}:${IMAGE_TAG}
           docker push ${IMAGE_REPO}:latest
 
-      - name: Update Kustomize image tag (prod overlay) and push commit
+      - name: Update feed-api Kustomize image tag (prod overlay) and push commit
         run: |
           FILE="k8s/overlays/prod/kustomization.yaml"
           sed -i "0,/newTag:/s/newTag:.*/newTag: ${IMAGE_TAG}/" "$FILE"
