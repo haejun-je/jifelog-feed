@@ -9,7 +9,7 @@ resources:
 images:
   - name: jifelog-feed-api
     newName: jhjun07/jifelog-feed-api
-    newTag: dev-6ab86587a144d33e015189c16d14c511d4fcff7a
+    newTag: dev-280d2f0f92c9ee3803e8377193ef65ea80ec54f8
 
 patches:
   - path: patch-deployment.yaml
